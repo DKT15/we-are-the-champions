@@ -7,7 +7,27 @@
     <link rel="stylesheet" href="assets/index.css" />
   </head>
   <body>
-    <h1>We are the Champions</h1>
+    <div class="container">
+      <img
+        src="assets/winner-img.svg"
+        alt="Image of two people giving each other a high five."
+      />
+      <h1>We are the Champions</h1>
+      <section class="main-section">
+        <input
+          type="text"
+          id="endorsement-input"
+          placeholder="Write your endorsement here"
+        />
+        <div class="alias-fields">
+          <input type="text" id="from-input" placeholder="From" />
+          <input type="text" id="to-input" placeholder="To" />
+        </div>
+        <button id="publish-btn">Publish</button>
+      </section>
+      <h2>Endorsements</h2>
+      <section id="endorsement-section"></section>
+    </div>
     <script src="assets/index.js"></script>
   </body>
 </html>

@@ -37,7 +37,7 @@ publishBtnEl.addEventListener("click", function () {
 
   clearInput();
 
-  // addComment();
+  addComment();
 });
 
 onValue(championsInDB, function (snapshot) {
@@ -50,7 +50,7 @@ onValue(championsInDB, function (snapshot) {
       let commentsID = comments[0];
       let commentsValue = comments[1];
 
-      addComment(comments); //appends each item to the shopping list element for each iteration.
+      addComment(comments); //appends each item to the comment element for each iteration.
     }
   }
 });

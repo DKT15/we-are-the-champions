@@ -11,6 +11,7 @@ import {
   ref,
   push,
   onValue,
+  update,
 } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
 const appSettings = {
@@ -33,25 +34,26 @@ publishBtnEl.addEventListener("click", function () {
   let fromValue = fromInputEl.value;
   let toValue = toInputEl.value;
 
-  push(championsInDB, [endorsementValue, fromValue, toValue]);
-
-  clearInput();
+  if (endorsementValue && fromValue && toValue) {
+    clearInput();
+    push(championsInDB, [endorsementValue, fromValue, toValue, 0]);
+  } else {
+    clearInput();
+  }
 });
 
 onValue(championsInDB, function (snapshot) {
+  clearEndorsementEl();
+
   if (snapshot.exists()) {
     // will only fetch items from the database if there is any
     let commentsArray = Object.entries(snapshot.val()); //converts snapshot.val() from an object to an Array. Entries gives both the id and value in the array.
-
-    clearEndorsementEl();
 
     for (var i = 0; i < commentsArray.length; i++) {
       let comments = commentsArray[i];
 
       addComment(comments); //appends each item to the comment element for each iteration.
     }
-  } else {
-    endorsementEl.innerHTML = "No feedback yet.";
   }
 });
 
@@ -61,31 +63,46 @@ function addComment(comment) {
   let commentInput = commentData[0];
   let commentFrom = commentData[1];
   let commentTo = commentData[2];
+  let commentLike = commentData[3];
 
-  let newEl = $("<li>");
-  let contentEl = $("<div>");
-  let toInputEl = $("<h3>");
-  let fromInputEl = $("<h3>");
-  let endorsementInputEl = $("<p>");
-  let likeFromContainer = $("<div>");
+  let newEl = document.createElement("li");
+  let contentEl = document.createElement("div");
+  let toInputEl = document.createElement("h3");
+  let fromInputEl = document.createElement("h3");
+  let endorsementInputEl = document.createElement("p");
+  let likeFromContainer = document.createElement("div");
+  let likesEl = document.createElement("button");
 
   toInputEl.textContent = `To ${commentTo}`;
   endorsementInputEl.textContent = commentInput;
   fromInputEl.textContent = `From ${commentFrom}`;
+  likesEl.textContent = `👍`;
 
   newEl.appendChild(contentEl);
   contentEl.appendChild(toInputEl);
   contentEl.appendChild(endorsementInputEl);
   contentEl.appendChild(likeFromContainer);
   likeFromContainer.appendChild(fromInputEl);
+  likeFromContainer.appendChild(likesEl);
 
-  contentEl.addClass("content");
-  toInputEl.addClass("to-text");
-  fromInputEl.addClass("from-text");
-  endorsementInputEl.addClass("endorsement-text");
-  likeFromContainer.addClass("like-from-container");
+  contentEl.classList.add("content");
+  toInputEl.classList.add("to-text");
+  fromInputEl.classList.add("from-text");
+  endorsementInputEl.classList.add("endorsement-text");
+  likeFromContainer.classList.add("like-from-container");
+  likesEl.classList.add("like-btn");
 
-  endorsementEl.append(newEl);
+  likesEl.addEventListener("click", function () {
+    commentLike += 1;
+    likesEl.innerText = `👍 ${commentLike}`;
+
+    let likesInDB = ref(database, `like/${commentId}`);
+    update(likesInDB, {
+      3: commentLike,
+    });
+  });
+
+  endorsementEl.prepend(newEl);
 }
 
 function clearInput() {

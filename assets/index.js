@@ -33,25 +33,25 @@ publishBtnEl.addEventListener("click", function () {
   let endorsementValue = endorsementInputEl.value;
   let fromValue = fromInputEl.value;
   let toValue = toInputEl.value;
+  let likeCount = 0;
 
   if (endorsementValue && fromValue && toValue) {
     clearInput();
-    push(championsInDB, [endorsementValue, fromValue, toValue, 0]);
+    push(championsInDB, [endorsementValue, fromValue, toValue, likeCount]);
   } else {
     clearInput();
   }
 });
 
 onValue(championsInDB, function (snapshot) {
-  clearEndorsementEl();
-
   if (snapshot.exists()) {
     // will only fetch items from the database if there is any
     let commentsArray = Object.entries(snapshot.val()); //converts snapshot.val() from an object to an Array. Entries gives both the id and value in the array.
 
+    clearEndorsementEl();
+
     for (var i = 0; i < commentsArray.length; i++) {
       let comments = commentsArray[i];
-
       addComment(comments); //appends each item to the comment element for each iteration.
     }
   }
@@ -76,7 +76,7 @@ function addComment(comment) {
   toInputEl.textContent = `To ${commentTo}`;
   endorsementInputEl.textContent = commentInput;
   fromInputEl.textContent = `From ${commentFrom}`;
-  likesEl.textContent = `👍`;
+  likesEl.innerText = `👍 ${commentLike}`;
 
   newEl.appendChild(contentEl);
   contentEl.appendChild(toInputEl);
@@ -93,10 +93,9 @@ function addComment(comment) {
   likesEl.classList.add("like-btn");
 
   likesEl.addEventListener("click", function () {
-    commentLike += 1;
-    likesEl.innerText = `👍 ${commentLike}`;
+    commentLike++;
 
-    let likesInDB = ref(database, `like/${commentId}`);
+    let likesInDB = ref(database, `listOfComments/${commentId}`);
     update(likesInDB, {
       3: commentLike,
     });

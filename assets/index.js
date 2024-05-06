@@ -35,6 +35,7 @@ publishBtnEl.addEventListener("click", function () {
   let toValue = toInputEl.value;
   let likeCount = 0;
 
+  //pushing data to the database if the user has completed all the fields.
   if (endorsementValue && fromValue && toValue) {
     clearInput();
     push(championsInDB, [endorsementValue, fromValue, toValue, likeCount]);
@@ -48,6 +49,7 @@ onValue(championsInDB, function (snapshot) {
     // will only fetch items from the database if there is any
     let commentsArray = Object.entries(snapshot.val()); //converts snapshot.val() from an object to an Array. Entries gives both the id and value in the array.
 
+    //stops the duplication of data in the endorsementEl by clearing it before adding the new comment.
     clearEndorsementEl();
 
     for (var i = 0; i < commentsArray.length; i++) {
@@ -57,6 +59,7 @@ onValue(championsInDB, function (snapshot) {
   }
 });
 
+// function to add each comment.
 function addComment(comment) {
   let commentId = comment[0];
   let commentData = comment[1];
@@ -65,6 +68,7 @@ function addComment(comment) {
   let commentTo = commentData[2];
   let commentLike = commentData[3];
 
+  // creating each element needed for comments.
   let newEl = document.createElement("li");
   let contentEl = document.createElement("div");
   let toInputEl = document.createElement("h3");
@@ -73,6 +77,7 @@ function addComment(comment) {
   let likeFromContainer = document.createElement("div");
   let likesEl = document.createElement("button");
 
+  //assigning the values entered into the input onto the elements created above.
   toInputEl.textContent = `To ${commentTo}`;
   endorsementInputEl.textContent = commentInput;
   fromInputEl.textContent = `From ${commentFrom}`;
@@ -85,6 +90,7 @@ function addComment(comment) {
   likeFromContainer.appendChild(fromInputEl);
   likeFromContainer.appendChild(likesEl);
 
+  //assigning classes to each element.
   contentEl.classList.add("content");
   toInputEl.classList.add("to-text");
   fromInputEl.classList.add("from-text");
@@ -92,6 +98,7 @@ function addComment(comment) {
   likeFromContainer.classList.add("like-from-container");
   likesEl.classList.add("like-btn");
 
+  // allows users to like a comment.
   likesEl.addEventListener("click", function () {
     commentLike++;
 
@@ -101,15 +108,18 @@ function addComment(comment) {
     });
   });
 
+  //adds the most recent comment to the top of the endorsementEl.
   endorsementEl.prepend(newEl);
 }
 
+//clears input fields.
 function clearInput() {
   endorsementInputEl.value = "";
   fromInputEl.value = "";
   toInputEl.value = "";
 }
 
+//clears the endorsementEl.
 function clearEndorsementEl() {
   endorsementEl.innerHTML = "";
 }

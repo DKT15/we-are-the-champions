@@ -83,7 +83,7 @@ input::placeholder {
 }
 
 li {
-    width: 300px;
+    width: 310px;
     list-style: none;
     background: white;
     color: black;
@@ -97,4 +97,10 @@ li {
     color: black;
     margin: 16px 0;
     font-size: 16px;
+}
+
+.like-btn {
+    border: none;
+    background-color: white;
+    cursor: pointer;
 }

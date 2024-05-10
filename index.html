@@ -11,7 +11,7 @@
     <link rel="manifest" href="/site.webmanifest" />
   </head>
   <body>
-    <div class="container">
+    <main class="container">
       <img
         src="assets/winner-img.svg"
         alt="Image of two people giving each other a high five."
@@ -23,20 +23,15 @@
           id="endorsement-input"
           placeholder="Write your endorsement here"
         />
-        <div id="alias-fields">
+        <section id="alias-fields">
           <input type="text" id="from-input" placeholder="From" />
           <input type="text" id="to-input" placeholder="To" />
-        </div>
+        </section>
         <button id="publish-btn">Publish</button>
       </section>
       <h2>Endorsements</h2>
       <section id="endorsement-section"></section>
-    </div>
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
+    </main>
     <script src="assets/index.js" type="module"></script>
   </body>
 </html>

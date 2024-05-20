@@ -34,11 +34,18 @@ publishBtnEl.addEventListener("click", function () {
   let fromValue = fromInputEl.value;
   let toValue = toInputEl.value;
   let likeCount = 0;
+  let isLiked = false;
 
   //pushing data to the database if the user has completed all the fields.
   if (endorsementValue && fromValue && toValue) {
     clearInput();
-    push(championsInDB, [endorsementValue, fromValue, toValue, likeCount]);
+    push(championsInDB, [
+      endorsementValue,
+      fromValue,
+      toValue,
+      likeCount,
+      isLiked,
+    ]);
   } else {
     clearInput();
   }
@@ -67,6 +74,7 @@ function addComment(comment) {
   let commentFrom = commentData[1];
   let commentTo = commentData[2];
   let commentLike = commentData[3];
+  let isLiked = commentData[4];
 
   // creating each element needed for comments.
   let newEl = document.createElement("li");
@@ -98,13 +106,20 @@ function addComment(comment) {
   likeFromContainer.classList.add("like-from-container");
   likesEl.classList.add("like-btn");
 
-  // allows users to like a comment.
+  // allows users to like and unlike a comment.
   likesEl.addEventListener("click", function () {
-    commentLike++;
+    if (isLiked) {
+      commentLike--;
+    } else {
+      commentLike++;
+    }
+
+    isLiked = !isLiked;
 
     let likesInDB = ref(database, `listOfComments/${commentId}`);
     update(likesInDB, {
       3: commentLike,
+      4: isLiked,
     });
   });
 
